@@ -27,7 +27,8 @@ type Options struct {
 	BatchSize int
 	Verbose   bool
 	// http or https
-	Scheme string
+	Scheme    string
+	Separator string
 }
 
 func (o *Options) SetServer(s string) error {
@@ -62,16 +63,15 @@ func (o *Options) SetServer(s string) error {
 // BulkIndex takes a set of documents as strings and indexes them into elasticsearch
 func BulkIndex(docs []string, options Options) error {
 	link := fmt.Sprintf("%s://%s:%d/%s/%s/_bulk", options.Scheme, options.Host, options.Port, options.Index, options.DocType)
-	header := fmt.Sprintf(`{"index": {"_index": "%s", "_type": "%s"}}`, options.Index, options.DocType)
 	var lines []string
 	for _, doc := range docs {
 		if len(strings.TrimSpace(doc)) == 0 {
 			continue
 		}
-		lines = append(lines, header)
 		lines = append(lines, doc)
 	}
 	body := fmt.Sprintf("%s\n", strings.Join(lines, "\n"))
+	body = strings.Replace(body, options.Separator, "\n", -1)
 	response, err := http.Post(link, "application/json", strings.NewReader(body))
 	if err != nil {
 		return err

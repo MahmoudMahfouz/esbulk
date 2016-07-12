@@ -15,7 +15,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/miku/esbulk"
+	"github.com/mahmoudmahfouz/esbulk"
 )
 
 func main() {
@@ -34,6 +34,7 @@ func main() {
 	gzipped := flag.Bool("z", false, "unzip gz'd file on the fly")
 	mapping := flag.String("mapping", "", "mapping string or filename to apply before indexing")
 	purge := flag.Bool("purge", false, "purge any existing index before indexing")
+	separator := flag.String("separator", "^Ω^", "metadata separator")
 
 	var PrintUsage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: %s [OPTIONS] JSON\n", os.Args[0])
@@ -81,6 +82,7 @@ func main() {
 		BatchSize: *batchSize,
 		Verbose:   *verbose,
 		Scheme:    "http",
+		Separator: *separator,
 	}
 
 	// backwards-compat for -host and -port, only

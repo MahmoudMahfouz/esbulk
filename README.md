@@ -6,9 +6,9 @@ Fast parallel bulk loading utility for elasticsearch. [Asciicast](https://asciin
 Installation
 ------------
 
-    $ go get github.com/miku/esbulk/cmd/esbulk
+    $ go get github.com/mahmoudmahfouz/esbulk/cmd/esbulk
 
-For `deb` or `rpm` packages, see: https://github.com/miku/esbulk/releases
+For `deb` or `rpm` packages, see: https://github.com/mahmoudmahfouz/esbulk/releases
 
 Usage
 -----
@@ -29,6 +29,8 @@ Usage
           elasticsearch port (default 9200)
       -purge
           purge any existing index before indexing
+      -separator string
+          metadata separator (default ^Ω^)
       -server string
           elasticsearch server, this works with https as well (default "http://localhost:9200")
       -size int
@@ -49,8 +51,8 @@ per line, just run:
 
 Where `file.ldj` is line delimited JSON, like:
 
-    {"name": "esbulk", "version": "0.2.4"}
-    {"name": "estab", "version": "0.1.3"}
+    {"index": {"_index": "my_index", "_type": "my_type", "_id": 123}}THE_SEPARATOR{"name": "esbulk", "version": "0.2.4"}
+    {"index": {"_index": "my_index", "_type": "my_type", "_id": 123}}THE_SEPARATOR{"name": "another_doc", "version": "0.2.9"}
     ...
 
 By default `esbulk` will use as many parallel
@@ -73,4 +75,3 @@ kept for backwards compatibility.
 
 ----
 
-A similar project has been started for solr, called [solrbulk](https://github.com/miku/solrbulk).
